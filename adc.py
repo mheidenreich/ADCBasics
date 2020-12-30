@@ -29,26 +29,21 @@ steps = 255
 fade_factor = (steps * log10(2))/(log10(steps))
 ads7830_commands = (0x84, 0xc4, 0x94, 0xd4, 0xa4, 0xe4, 0xb4, 0xf4)
 
-
 def safe_exit(signum, frame):
     exit(1)
-
 
 def read_pcf8591(input):
     bus.write_byte(0x48, 0x40+input)
     return bus.read_byte(0x48)
 
-
 def read_ads7830(input):
     bus.write_byte(0x4b, ads7830_commands[input])
     return bus.read_byte(0x4b)
-
 
 def values(input):
     while True:
         value = read_ads7830(input)
         yield (pow(2, (value/fade_factor))-1)/steps
-
 
 try:
     signal(SIGTERM, safe_exit)
