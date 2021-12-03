@@ -58,4 +58,5 @@ except KeyboardInterrupt:
     pass
 
 finally:
+    led.source = None
     led.close()
